@@ -1,0 +1,50 @@
+THIS ISNT A MARKDOWN FILE BUT IT'S STILL REAL TO ME DARNIT
+
+# Shmouse
+## By Aryan Bhatt, Eric Chen, Gilvir Gill
+
+
+Looking to increase productivity when you're trying to do your Systems project, fifty college apps, and ten different projects for the various humanities classes you unknowingly signed up for? Multiple monitors not cutting it anymore? Shmouse is a C program that uses Xlib to allow you to use the same keyboard and mouse between completely different computers! It even lets you transfer our clipboard between multiple devices! 
+### Required libraries:
+* Xlib (wayland is way too outlandish)
+
+
+### UI
+To get started, run the server program, `./server`. This will manage the active keyboard, mouse, and clipboard (X primary selection). Next, you can
+begin launching clients with `./client`, which will automatically assume the new computer to be the rightmost. In order to 
+specify a certain left right order, you can specify a right-left priority, with the smallest number being the leftmost. For 
+example, running `./server -n 10` on computer 1 and `./server -n 1` on computer 2, computer 2 will show up as the leftmost. 
+Once multiple computers are established, you will be able to use any mouse on any computer. For instane, mouse 1 is connected 
+to computer 1. If you move mouse 1 all the way to the left of computer 1's screen, it will then move into the rightmost point 
+of computer 2. However, if you now use mouse 2, the cursor will be wherever it was the last time you used mouse 2. 
+
+
+### BUT HOW?  ? ? ?? ? ? ? ? ?
+
+Everything will be done effectively by manipulating X11 inputs and outputs, and using sockets to send information to the server machine, which will then manage what happens. There will be four C files, plus one header:
+* shmouse.h -- Master header
+* x_in.c -- Contains all functions that use input from X server (mainly Aryan)
+* x_out.c -- Contains all functions that output to X server (mainly Gilvir)
+* client.c -- Will contain a handshake procedure with the server, connects to the server, will attempt to send input upstream and will wait for output downstream. Will also need to use functions from x_in and x_out to regulate Xinput (effectivelly just disable a bunch of decides). (mainly Eric)
+* server.c -- God program that decides what inputs and outputs are used and where. Will fork processes that talk to each client, so will need full handshake process. Will also need various datastructures. Basically, any algorithms stated below will be employed in server.c:
+
+* a `comp_t` of sorts that will contain information about the client, including but not limited to the PID of the fork managing the socket, and variables that contain the last location of it's active mouse, for example. 
+* There will need to be an ordered map of sorts, that orders a bunch of computers based off the priority numbers described in UI. This can either be done just by having an ordered Array or LinkedList of structs that contain both integers and comp_t pointers. 
+* There will be shared memory in this server that will need to be controlled using semaphores. One write semaphore, and multiple read semaphores. Outputting buffers can take some time. 
+
+### Deadlines:
+2018-01-07: Have mostly done x_in and x_out, and ways of checking and setting pointer locations on a singe machine. 
+2018-01-09: Working multiclient server that can send a single buffer upstream and downstream wto cloients, controlled with semaphores as described in the last bullet point of the previous section.
+2018-01-11: Finish header file, make sure everything is clear for server and client, and in terms of mananigng x. 
+2018-01-14: Complete server.c
+2018-01-15: Make sure client.c has a clean exit (all devices are properly disabled and enabled at start and end, respectively).
+2018-01-16: Put it all together for MVP, start beginning on possible features.
+
+### MVP :
+* One mouse, one clipboard. Will fulfill all things stated in UI part.
+
+### Future Features:
+* Multiple clipboards (requires more research into X11 selections)
+* Multiple mice (requires more research into X11 cursors)
+* some dumb easteregg to mess with people.
+* Wayland support??? nah prolly not.
