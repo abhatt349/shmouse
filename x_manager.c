@@ -10,7 +10,30 @@ Display * open_root_display() {
         fprintf(stderr, "ERROR: Unable to open display");
         exit(1);
     }
+    return display;
 }
+
+
+Window * get_active_window() {
+    Window active;
+    int revert_to;
+    XGetInputFocus(display, & focused, &revert_to);
+    return active;
+}
+
+
+
+
+
+
+/*
+ *
+ *
+ *
+ *
+*/
+
+
 
 /* hard sets pointer location relative to ROOT window
  *

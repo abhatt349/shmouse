@@ -1,0 +1,10 @@
+# THIS DEVLOG will be organized most recent first!
+
+
+1/21/18
+Gilvir: Began writing abstraction of X11 to only use the features we need. Much of this project could be accomplished just with a few X functions, seeing that X technically works as a intra-network server.However, that ruins the fun.
+
+Week of 01/15/18
+AEG: Continued planning, wrote a few test programs outside of repo to familiarze with windows in x11.
+01/08/18
+AEG: Did further research into X11 and Xlib. Figured out how to compile programs with Xlib and loaded some test code onto stuycs computers to ensure library access worked as intended.
