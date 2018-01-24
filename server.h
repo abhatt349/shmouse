@@ -1,5 +1,7 @@
 #include <X11/Xlib.h>
 
-int server_connect(listen_socket);
-int subserver(client_socket);
+int initialize_server(); //opens shmemory, does initial connectio
+int subserver(int client_socket);
+int close_server();
+int control(int input_pc, int output_pc);
 
