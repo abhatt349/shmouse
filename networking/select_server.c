@@ -25,7 +25,7 @@ int main() {
     FD_SET(listen_socket, &read_fds); //add socket to fd set
 
     //select will block until either fd is ready
-    select(listen_socket + 1, &read_fds, NULL, NULL, NULL);
+    select(FD_SETSIZE, &read_fds, NULL, NULL, NULL);
 
     //if listen_socket triggered select
     if (FD_ISSET(listen_socket, &read_fds)) {
