@@ -99,7 +99,7 @@ void clip_subserver(int client_socket) {
 }
 
 void process(char * s) {
-  if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE-1))) {
+  if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE)-1)) {
     shared_clip = s;
   }
   else {
