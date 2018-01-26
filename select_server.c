@@ -1,6 +1,6 @@
 #include "networking.h"
 
-void process(char *s);
+void clip_process(char *s);
 void clip_subserver(int from_client);
 int client_index = 0;
 int isClip = 0;
@@ -63,7 +63,7 @@ int main() {
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       //if you don't read from stdin, it will continue to trigger select()
       fgets(buffer, sizeof(buffer), stdin);
-      char** command_arr = parse_args(buffer);
+      //char** command_arr = parse_args(buffer);
 
 
     }//end stdin select
@@ -92,14 +92,14 @@ void clip_subserver(int client_socket) {
   while (read(client_socket, buffer, sizeof(buffer))) {
 
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    process(buffer);
+    clip_process(buffer);
 
   }//end read loop
   close(client_socket);
   exit(0);
 }
 
-void process(char * s) {
+void clip_process(char * s) {
   if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE)-1)) {
     printf("wrote to mem\n");
     sprintf(shared_clip, "%s", s);
