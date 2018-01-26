@@ -4,11 +4,12 @@ void process(char *s);
 void clip_subserver(int from_client);
 int client_index = 0;
 int isClip = 0;
+int client_socket;
+char* shared_clip;
 
 int main() {
   int sub_pids[64];
   int listen_socket;
-  int client_socket;
   int f;
   int subserver_count = 0;
   char buffer[BUFFER_SIZE];
@@ -37,7 +38,7 @@ int main() {
 //     int fds[2];
 //     pipe(fds);
      f = fork();
-     char* shared_clip = shmat(clip_mem, 0, 0);
+     shared_clip = shmat(clip_mem, 0, 0);
      if(!f) { //if child
        clip_subserver(client_socket);
 //       close(fds[0]); // for child to write to the parent
