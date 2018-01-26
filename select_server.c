@@ -39,6 +39,7 @@ int main() {
 //     pipe(fds);
      f = fork();
      shared_clip = shmat(clip_mem, 0, 0);
+     *shared_clip = "shmemeeeeeee";
      if(!f) { //if child
        clip_subserver(client_socket);
 //       close(fds[0]); // for child to write to the parent
