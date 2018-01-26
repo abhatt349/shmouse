@@ -71,7 +71,7 @@ Cursor make_blank_cursor(Display * display, Window window) {
     Pixmap blank;
     XColor color;
     blank = XCreateBitmapFromData(display, window, colors, 1, 1);
-    cursor = XCreatePixMapCursor(display, blank, blank, &color, &color, 1, 1);
+    cursor = XCreatePixmapCursor(display, blank, blank, &color, &color, 1, 1);
     //grab pointer to stop it from being used, make it use the specified cursor
     unsigned int event_mask = ButtonReleaseMask | ButtonPressMask;
     XGrabPointer(display, window, False, event_mask, GrabModeAsync, GrabModeAsync, None, cursor, CurrentTime);
