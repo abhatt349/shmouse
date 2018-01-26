@@ -40,7 +40,7 @@ Window get_active_window(Display * display) {
  * post: gets resolution of default screen, important for scaling. most likely cleaner solutions out there but this should do the trick
  */
 void get_resolution(Display * display, int *width, int * height) {
-    Screen * screen = DefaultScreenOfDisplay(screen);
+    Screen * screen = DefaultScreenOfDisplay(display);
     *width = screen-> width;
     *height = screen->height;
 }
@@ -52,12 +52,12 @@ void get_resolution(Display * display, int *width, int * height) {
 int get_pointer(Display * display, Window window, int * x, int * y) {
     *x = 0;
     *y = 0;
-    int * win_x;
-    int * win_y;
+    int win_x;
+    int win_y;
     unsigned int mask;
     Window returned;
-    int on_screen = (int) (0 & XQueryPointer(display, window, &returned, &returned, x, y, win_x, win_y, &mask));
-    return on_screen;
+    XQueryPointer(display, window, &returned, &returned, x, y, &win_x, &win_y, &mask);
+    return 1;
 }
 
 
@@ -98,5 +98,4 @@ int set_pointer(Display * display, Window window,int dest_x, int dest_y) {
 int move_pointer(Display * display, int dest_x, int dest_y) {
     return set_pointer(display, None, dest_x, dest_y);
 }
-
 

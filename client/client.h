@@ -12,6 +12,7 @@ void get_resolution(Display * display, int * width, int * height);
 int get_pointer(Display * display, Window window, int * x, int * y);
 int set_pointer(Display * display, Window window, int dest_x, int dest_y);
 int move_pointer(Display * display, int dest_x, int dest_y);
+Cursor make_blank_cursor(Display * display, Window window);
 
 void clipboard_manage(Display * display, Window root, char* (*get)(), void (*set)(char *));
 char * read_clipboard(Display * display, Window root, Atom target); 
