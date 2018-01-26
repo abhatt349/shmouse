@@ -1,4 +1,4 @@
-#include "client.h"
+#include "../client/client.h"
 int main() {
     Display * display = open_root_display();
     Window root = get_root_window(display);

@@ -1,4 +1,4 @@
-#include "client.h"
+#include "../client/client.h"
 
 char clip[4096] = "foobar";
 char * clipboard = clip;
