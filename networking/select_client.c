@@ -9,8 +9,8 @@ char* get() {
 }
 
 void set(char *apples) {
-  //write(global_clip_socket, apples, sizeof(apples));
-  write(global_clip_socket, "hello", sizeof("hello"));
+  write(global_clip_socket, apples, sizeof(apples));
+  //write(global_clip_socket, "hello", sizeof("hello"));
 }
 
 
@@ -27,14 +27,15 @@ int main(int argc, char **argv) {
     server_socket2 = client_setup( argv[1]);
     write(server_socket1, argv[2], sizeof(argv[2]));
     write(server_socket2, argv[2], sizeof(argv[2]));
-    //read(server_socket1, buffer, sizeof(buffer));
-    //read(server_socket2, buffer, sizeof(buffer));
+    read(server_socket1, buffer, sizeof(buffer));
     printf("%s", buffer);
-    sprintf(buffer, "clip");
-    printf("%s\n", buffer);
-    write(server_socket1, buffer, sizeof(buffer));
-    sprintf(buffer, "mouse");
-    write(server_socket2, buffer, sizeof(buffer));
+    read(server_socket2, buffer, sizeof(buffer));
+    printf("%s", buffer);
+//    sprintf(buffer, "clip");
+//    printf("%s\n", buffer);
+    write(server_socket1, "clip", sizeof("clip"));
+//    sprintf(buffer, "mouse");
+    write(server_socket2, "mouse", sizeof("mouse"));
   }
   else {
     server_socket1 = client_setup( TEST_IP );

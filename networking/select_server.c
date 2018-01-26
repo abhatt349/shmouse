@@ -34,26 +34,26 @@ int main() {
     //if listen_socket triggered select
     if (FD_ISSET(listen_socket, &read_fds)) {
      client_socket = server_connect(listen_socket);
-     int fds[2];
-     pipe(fds);
+//     int fds[2];
+//     pipe(fds);
      f = fork();
      char* shared_clip = shmat(clip_mem, 0, 0);
      if(!f) { //if child
        subserver(client_socket);
-       close(fds[0]); // for child to write to the parent
-       char s[10];
-       sprintf(s, "%d", client_index*2 + isClip);
-       printf("%s", s);
-       sleep(2); // parent will wait for the child to run, even without using wait
-       write(fds[1], s, sizeof(s));
+//       close(fds[0]); // for child to write to the parent
+//       char s[10];
+//       sprintf(s, "%d", client_index*2 + isClip);
+//       printf("%s", s);
+//       sleep(2); // parent will wait for the child to run, even without using wait
+//       write(fds[1], s, sizeof(s));
     }
      else {
        subserver_count++;
        close(client_socket);
-       close(fds[1]);
-       char s[10];
-       read(fds[0], s, sizeof(s));
-       sub_pids[atoi(s)] = f;
+//       close(fds[1]);
+//       char s[10];
+//       read(fds[0], s, sizeof(s));
+//       sub_pids[atoi(s)] = f;
      }
     }//end listen_socket select
 
@@ -75,9 +75,9 @@ void subserver(int client_socket) {
   client_index = atoi(buffer);
   printf("%d\n", client_index);
   //for testing client select statement
-  //write(client_socket, "hello client", sizeof("hello client"));
+  write(client_socket, "hello client\n", sizeof("hello client\n"));
   read(client_socket, buffer, sizeof(buffer));
-  printf("%s\n", buffer);
+  //printf("%s\n", buffer);    //diagnostic
   if (strcmp(buffer, "clip")) {
     isClip = 0;
     printf("Mouse!!\n");
