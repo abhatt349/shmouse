@@ -99,3 +99,30 @@ int move_pointer(Display * display, int dest_x, int dest_y) {
     return set_pointer(display, None, dest_x, dest_y);
 }
 
+int fake_mouse_event(Display * display, Window root, int type, int button) {
+    XEvent event;
+    memset(&event, 0, sizeof(event));
+    event.xbutton.same_screen= True; //same screen as root window
+    event.xbutton.subwindow = root; 
+    //get the rest from querying the pointer
+    //this is the one time sub windows and stuff actually matter, so keep running this in a loop until there are no more subwindows to find the most encapsulated code
+    while ((event.xbutton.subwindow ) != 0) {
+        event.xbutton.window = event.xbutton.subwindow;
+        XQueryPointer(display, event.xbutton.window, &event.xbutton.root, &event.xbutton.subwindow, &event.xbutton.x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
+    }
+    if (type == MOUSE_PRESS) {
+        event.type = ButtonPress;
+        if (!XSendEvent(display, PointerWindow, True, ButtonPressMask, &event)) fprintf(stderr, "ERROR: Could not send button press event");
+        return MOUSE_PRESS;
+    } 
+    if (type == MOUSE_RELEASE) {
+        event.type = ButtonRelease;
+        if (!XSendEvent(display, PointerWindow, True, ButtonReleaseMask, &event)) fprintf(stderr, "ERROR: Could not send button release event");
+        return MOUSE_RELEASE;
+    }
+    else {
+        return 0;
+    }
+
+
+}
