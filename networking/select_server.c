@@ -15,6 +15,7 @@ int main() {
   fd_set read_fds;
 
   listen_socket = server_setup();
+  int clip_mem = shmget(CLIP_KEY, 10000 * sizeof(char), 0777 | IPC_CREAT);
 
   while (1) {
 
@@ -32,6 +33,7 @@ int main() {
      client_socket = server_connect(listen_socket);
 
      f = fork();
+     char* shared_clip = shmat(clip_mem, 0, 0);
      if (f == 0)
        subserver(client_socket);
      else {

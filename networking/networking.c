@@ -45,6 +45,8 @@ int server_setup() {
   //free the structs used by getaddrinfo
   free(hints);
   freeaddrinfo(results);
+  
+
   return sd;
 }
 
