@@ -26,22 +26,22 @@ int main(int argc, char **argv) {
   if (argc == 3) {
     server_socket1 = client_setup( argv[1]);
     global_clip_socket = server_socket1;
-    server_socket2 = client_setup( argv[1]);
+    //server_socket2 = client_setup( argv[1]);
     write(server_socket1, argv[2], sizeof(argv[2]));
-    write(server_socket2, argv[2], sizeof(argv[2]));
+    //write(server_socket2, argv[2], sizeof(argv[2]));
     read(server_socket1, buffer, sizeof(buffer));
     printf("%s", buffer);
-    read(server_socket2, buffer, sizeof(buffer));
-    printf("%s", buffer);
-//    sprintf(buffer, "clip");
-//    printf("%s\n", buffer);
+   // read(server_socket2, buffer, sizeof(buffer));
+    //printf("%s", buffer);
+    sprintf(buffer, "clip");
+    printf("%s\n", buffer);
     write(server_socket1, "clip", sizeof("clip"));
-//    sprintf(buffer, "mouse");
-    write(server_socket2, "mouse", sizeof("mouse"));
+    //sprintf(buffer, "mouse");
+    //write(server_socket2, "mouse", sizeof("mouse"));
   }
   else {
     server_socket1 = client_setup( TEST_IP );
-    server_socket2 = client_setup( TEST_IP );
+    //server_socket2 = client_setup( TEST_IP );
   }
 
   Display * display = open_root_display();
