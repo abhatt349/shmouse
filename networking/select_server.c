@@ -2,9 +2,11 @@
 
 void process(char *s);
 void subserver(int from_client);
+int client_index = 0;
+int isClip = 0;
 
 int main() {
-  int[64] sub_pids;
+  int sub_pids[64];
   int listen_socket;
   int client_socket;
   int f;
@@ -40,7 +42,8 @@ int main() {
        subserver(client_socket);
        close(fds[0]); // for child to write to the parent
        char s[10];
-       sprintf(s, "%d", index*2 + isClip)
+       sprintf(s, "%d", client_index*2 + isClip);
+       printf("%s", s);
        sleep(2); // parent will wait for the child to run, even without using wait
        write(fds[1], s, sizeof(s));
     }
@@ -58,25 +61,23 @@ int main() {
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       //if you don't read from stdin, it will continue to trigger select()
       fgets(buffer, sizeof(buffer), stdin);
-      printf("[server] subserver count: %d\n", subserver_count);
+      char** command_arr = parse_args(buffer);
+
 
     }//end stdin select
   }
 }
 
 void subserver(int client_socket) {
-  int index;
-  int isClip = 0;
   char buffer[BUFFER_SIZE];
 
   read(client_socket, buffer, sizeof(buffer));
-  index = atoi(buffer);
-  printf("%d\n", index);
+  client_index = atoi(buffer);
+  printf("%d\n", client_index);
   //for testing client select statement
-  strncpy(buffer, "hello client", sizeof(buffer));
-  write(client_socket, buffer, sizeof(buffer));
-
+  //write(client_socket, "hello client", sizeof("hello client"));
   read(client_socket, buffer, sizeof(buffer));
+  printf("%s\n", buffer);
   if (strcmp(buffer, "clip")) {
     isClip = 0;
     printf("Mouse!!\n");

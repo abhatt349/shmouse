@@ -18,7 +18,7 @@
 #define NETWORKING_H
 
 #define BUFFER_SIZE 256
-#define PORT "9001"
+#define PORT "1234"
 #define TEST_IP "127.0.0.1"
 
 #define CLIP_KEY 17934
@@ -28,6 +28,10 @@ void error_check(int i, char *s);
 int server_setup();
 int server_connect(int sd);
 int client_setup(char * server);
+
+char* make_copy(char* str);
+size_t replace_spaces_with_nulls(char* str);
+char** parse_args(char* line);
 
 
 #endif

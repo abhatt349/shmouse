@@ -1,5 +1,19 @@
 #include "networking.h"
 
+int global_clip_socket = 0;
+
+char* get() {
+  char *buffer = malloc(BUFFER_SIZE);
+  read(global_clip_socket, buffer, sizeof(buffer));
+  return buffer;
+}
+
+void set(char *apples) {
+  //write(global_clip_socket, apples, sizeof(apples));
+  write(global_clip_socket, "hello", sizeof("hello"));
+}
+
+
 int main(int argc, char **argv) {
 
   int server_socket1, server_socket2;
@@ -9,12 +23,15 @@ int main(int argc, char **argv) {
 
   if (argc == 3) {
     server_socket1 = client_setup( argv[1]);
+    global_clip_socket = server_socket1;
     server_socket2 = client_setup( argv[1]);
     write(server_socket1, argv[2], sizeof(argv[2]));
     write(server_socket2, argv[2], sizeof(argv[2]));
-    read(server_socket1, buffer, sizeof(buffer));
-    read(server_socket2, buffer, sizeof(buffer));
+    //read(server_socket1, buffer, sizeof(buffer));
+    //read(server_socket2, buffer, sizeof(buffer));
+    printf("%s", buffer);
     sprintf(buffer, "clip");
+    printf("%s\n", buffer);
     write(server_socket1, buffer, sizeof(buffer));
     sprintf(buffer, "mouse");
     write(server_socket2, buffer, sizeof(buffer));
