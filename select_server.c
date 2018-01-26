@@ -1,7 +1,7 @@
 #include "networking.h"
 
 void process(char *s);
-void subserver(int from_client);
+void clip_subserver(int from_client);
 int client_index = 0;
 int isClip = 0;
 
@@ -39,7 +39,7 @@ int main() {
      f = fork();
      char* shared_clip = shmat(clip_mem, 0, 0);
      if(!f) { //if child
-       subserver(client_socket);
+       clip_subserver(client_socket);
 //       close(fds[0]); // for child to write to the parent
 //       char s[10];
 //       sprintf(s, "%d", client_index*2 + isClip);
@@ -68,7 +68,7 @@ int main() {
   }
 }
 
-void subserver(int client_socket) {
+void clip_subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
 
   read(client_socket, buffer, sizeof(buffer));
@@ -90,9 +90,18 @@ void subserver(int client_socket) {
   while (read(client_socket, buffer, sizeof(buffer))) {
 
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    //
-    write(client_socket, buffer, sizeof(buffer));
+    process(buffer);
+
   }//end read loop
   close(client_socket);
   exit(0);
+}
+
+void process(char * s) {
+  if(strcmp(s, REQUEST_MESSAGE)) {
+    shared_clip = s;
+  }
+  else {
+    write(client_socket, shared_clip, sizeof(shared_clip));
+  }
 }
