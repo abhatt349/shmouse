@@ -102,7 +102,7 @@ void clip_subserver(int client_socket) {
 void clip_process(char * s) {
   if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE)-1)) {
     printf("wrote to mem\n");
-    sprintf(shared_clip, "%s", s);
+    sprintf(shared_clip, s);
   }
   else {
     write(client_socket, shared_clip, strlen(shared_clip));
