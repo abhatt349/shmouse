@@ -39,7 +39,7 @@ int main() {
 //     pipe(fds);
      f = fork();
      shared_clip = shmat(clip_mem, 0, 0);
-     shared_clip = "shmemeeeeeee";
+     sprintf(shared_clip, "shmeeeeeeemeeee");
      if(!f) { //if child
        clip_subserver(client_socket);
 //       close(fds[0]); // for child to write to the parent
@@ -102,7 +102,7 @@ void clip_subserver(int client_socket) {
 void process(char * s) {
   if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE)-1)) {
     printf("wrote to mem\n");
-    shared_clip = s;
+    sprintf(shared_clip, "%s", s);
   }
   else {
     write(client_socket, shared_clip, sizeof(shared_clip));
