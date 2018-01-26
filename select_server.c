@@ -105,6 +105,6 @@ void clip_process(char * s) {
     sprintf(shared_clip, "%s", s);
   }
   else {
-    write(client_socket, shared_clip, BUFFER_SIZE);
+    write(client_socket, shared_clip, strlen(shared_clip));
   }
 }
