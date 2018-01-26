@@ -7,9 +7,17 @@ int main(int argc, char **argv) {
 
   fd_set read_fds;
 
-  if (argc == 2) {
+  if (argc == 3) {
     server_socket1 = client_setup( argv[1]);
     server_socket2 = client_setup( argv[1]);
+    write(server_socket1, argv[2], sizeof(argv[2]));
+    write(server_socket2, argv[2], sizeof(argv[2]));
+    read(server_socket1, buffer, sizeof(buffer));
+    read(server_socket2, buffer, sizeof(buffer));
+    sprintf(buffer, "clip");
+    write(server_socket1, buffer, sizeof(buffer));
+    sprintf(buffer, "mouse");
+    write(server_socket2, buffer, sizeof(buffer));
   }
   else {
     server_socket1 = client_setup( TEST_IP );
