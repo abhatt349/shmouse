@@ -13,7 +13,7 @@ Cursor make_blank_cursor(Display *  display, Window window) {
     cursor = XCreatePixmapCursor(display, blank, blank, &color, &color, 1, 1);
 
     //grab the pointer to stop it from being used.
-    XGrabPointer(display, window, False, (KeyPressMask|KeyReleaseMask)&0, GrabModeAsync, GrabModeAsync, None, cursor, CurrentTime);
+    XGrabPointer(display, window, False, (ButtonReleaseMask | ButtonPressMask), GrabModeAsync, GrabModeAsync, None, cursor, CurrentTime);
 }
 
 int main() {
@@ -27,5 +27,4 @@ int main() {
         XQueryPointer(display, window, &returned, &returned, &root_x, &root_y, &win_x, &win_y, &mask);
         printf("%d,%d\n", root_x, root_y);
     }
-    
 }
