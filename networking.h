@@ -23,7 +23,7 @@
 
 #define CLIP_KEY 17934
 #define ARR_KEY 12344
-
+#define REQUEST_MESSAGE "%%%%%%\\r2"
 void error_check(int i, char *s);
 int server_setup();
 int server_connect(int sd);

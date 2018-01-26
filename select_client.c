@@ -3,14 +3,16 @@
 int global_clip_socket = 0;
 
 char* get() {
-  char *buffer = malloc(BUFFER_SIZE);
-  read(global_clip_socket, buffer, sizeof(buffer));
-  return buffer;
+    //send message stating that u are requesting.
+    write(global_clip_socket, REQUEST_MESSAGE, sizeof(REQUEST_MESSAGE));
+    char *buffer = malloc(BUFFER_SIZE);
+    read(global_clip_socket, buffer, sizeof(buffer));
+    return buffer;
 }
 
 void set(char *apples) {
-  write(global_clip_socket, apples, sizeof(apples));
-  //write(global_clip_socket, "hello", sizeof("hello"));
+    write(global_clip_socket, apples, sizeof(apples));
+    //write(global_clip_socket, "hello", sizeof("hello"));
 }
 
 
