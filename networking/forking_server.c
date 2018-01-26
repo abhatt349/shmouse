@@ -5,18 +5,21 @@ void subserver(int from_client);
 
 int main() {
 
-  int listen_socket;
+  int listen_socket1, listen_socket2;
   int f;
-  listen_socket = server_setup();
-
+  listen_socket1 = server_setup();
+  listen_socket2 = server_setup();
   while (1) {
 
-    int client_socket = server_connect(listen_socket);
+    int client_socket1 = server_connect(listen_socket1);
+    int client_socket2 = server_connect(listen_socket2);
     f = fork();
     if (f == 0)
-      subserver(client_socket);
+      subserver(client_socket1);
+      subserver(client_socket2);
     else
-      close(client_socket);
+      close(client_socket1);
+      close(client_socket2);
   }
 }
 
