@@ -1,11 +1,16 @@
 # THIS DEVLOG will be organized most recent first!
 
+1/25/18:
+Eric: Imported networking files from dwsource.
+
 1/22/18: 
 Gilvir: Wrote test programs we need to run in labs to make sure everything will work (besides networking). Including ones that make fake cursors that are invisible and prints out cursor locations, another one that sets the location of the mouse, and yet another that moves the mouse every millisecond by 1.4 pixels. Also, theres a few force clipboard ones that we found online that we can use for testing. Will make sure to credit them in the readme, were also a great resource for explaining how selections work in X11. 
-1/21/18
+
+1/21/18:
 Gilvir: Began writing abstraction of X11 to only use the features we need. Much of this project could be accomplished just with a few X functions, seeing that X technically works as a intra-network server.However, that ruins the fun. Added tester that scrolls the cursor using XWarpPointer, lag isn't that bad at one millisecond.
 
-Week of 01/15/18
+Week of 01/15/18:
 AEG: Continued planning, wrote a few test programs outside of repo to familiarze with windows in x11.
-01/08/18
+
+01/08/18:
 AEG: Did further research into X11 and Xlib. Figured out how to compile programs with Xlib and loaded some test code onto stuycs computers to ensure library access worked as intended.
