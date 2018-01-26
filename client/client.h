@@ -4,7 +4,7 @@
 #include <time.h>
 #include <X11/Xlib.h>
 #include <string.h>
-
+#include <X11/extensions/XTest.h>
 #define MOUSE_RELEASE -1
 #define MOUSE_PRESS 1
 Display * open_root_display();
