@@ -22,8 +22,11 @@
 #define TEST_IP "127.0.0.1"
 
 #define CLIP_KEY 17934
-#define ARR_KEY 12344
+#define MOUSE_KEY 12344
 #define REQUEST_MESSAGE "&&&&&&"
+#define REQUEST_INPUT "<--------"
+#define REQUEST_OUTPUT "------->"
+#define REQUEST_NONE "----------"
 void error_check(int i, char *s);
 int server_setup();
 int server_connect(int sd);
