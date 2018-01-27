@@ -1,5 +1,8 @@
 # THIS DEVLOG will be organized most recent first!
 
+01/26/18:
+Aryan: Finished as much of network code as possible. Shared clipboard is semi-operational
+Gilvir: Wrote all client side/ Xlib side functions, made permanent programs to test them. Updated the README to match the tone backed project after time issues/really bad keyboard event support on stuycs machines.
 1/25/18:
 Eric: Imported networking files from dwsource.
 
