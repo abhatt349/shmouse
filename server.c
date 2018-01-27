@@ -88,11 +88,11 @@ void clip_subserver(int client_socket) {
     isClip = 1;
     printf("Clipboard!!\n");
   }
+  char *buf = (char *) calloc(BUFFER_SIZE, sizeof(char));
+  while (read(client_socket, buf, BUFFER_SIZE)) {
 
-  while (read(client_socket, buffer, sizeof(buffer))) {
-
-    printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    clip_process(buffer);
+    printf("[subserver %d] received: [%s]\n", getpid(), buf);
+    clip_process(buf);
 
   }//end read loop
   close(client_socket);
@@ -100,7 +100,6 @@ void clip_subserver(int client_socket) {
 }
 
 void clip_process(char * s) {
-  printf("%s\n", s);
   if(strncmp(s, REQUEST_MESSAGE, strlen(REQUEST_MESSAGE)-1)) {
     printf("wrote to mem\n");
     sprintf(shared_clip, "%s", s);
