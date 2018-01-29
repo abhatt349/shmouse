@@ -1,11 +1,18 @@
 #include "networking/networking.h"
-
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 void clip_process(char *s);
 void subserver(int from_client);
 int client_socket;
 int* clients;
 char* shared_clip;
 void mouse_process(int client_socket, int client_index);
+char ** get_args(char * cmd);
+
+//mouse subspecific:
+int up_fd;
+int down_fd;
 
 int main() {
   int listen_socket;
@@ -49,7 +56,17 @@ int main() {
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
         //if you don't read from stdin, it will continue to trigger select()
         fgets(buffer, sizeof(buffer), stdin);
-        //char** command_arr = parse_args(buffer);
+        char ** args = get_args(buffer);
+        int controller;
+        int controlled;
+        if (args[1] != NULL) {
+            controller = atoi(args[1]);
+        }
+        if (args[2] != NULL) {
+            controlled = atoi(args[2]);
+        }
+        printf("Controlling #%d with #%d\n", controlled, controller);
+        //mouse_control(controller, controlled);
 
 
     }//end stdin select
@@ -100,16 +117,47 @@ void clip_process(char * s) {
 }
 
 void mouse_process(int client_socket, int client_index) {
-  char *buf = (char *) calloc(BUFFER_SIZE, sizeof(char));
-  clients[client_index] = getpid();
-  char *fifo_name;
-  sprintf(fifo_name, "%dUP", getpid());
-  mkfifo(fifo_name, 0777);
-  up_fifo_fd = open(fifo_name, O_RDONLY);
-  sprintf(fifo_name, "%dDOWN", getpid());
-  mkfifo(fifo_name, 0777);
-  down_fifo_fd = open(fifo_name, O_WRONLY);
-//  while (read(up_fifo_fd, buf, BUFFER_SIZE)) {
-//  }
+    char *buf = (char *) calloc(BUFFER_SIZE, sizeof(char));
+    clients[client_index] = getpid();
+    char *fifo_name;
+    sprintf(fifo_name, "%dUP", getpid());
+    mkfifo(fifo_name, 0777);
+    up_fd = open(fifo_name, O_RDONLY);
+    sprintf(fifo_name, "%dDOWN", getpid());
+    mkfifo(fifo_name, 0777);
+    down_fd = open(fifo_name, O_WRONLY);
+    //select call on server instructions vs continuing current task
+    //  while (read(up_fifo_fd, buf, BUFFER_SIZE)) {
+    //  }
     //get array containing pids of clients. clients[index] returns pid of subserver that's managing
 }
+
+
+
+char ** get_args(char * cmd) {
+    size_t args_sz = 64;
+    char ** args = calloc(args_sz, sizeof(char));
+    int i = 0;
+    char * arg;
+    while ((arg = strsep(&cmd, " ")) != NULL) {
+        //if the arg isnt \0, add it to the args list.
+        if (*arg != '\0') {
+            if ( i+1 >= args_sz) {
+                args_sz *= 2;
+                void * tmp = realloc(args, args_sz * sizeof(char));
+                if (tmp != NULL) {
+                    args = (char **) tmp;
+                }
+                else {
+                    free(args);
+                    return NULL;
+                }
+            }
+            args[i++] = arg;
+        }
+    }
+    args[i] = 0;
+    return args;
+
+}
+
