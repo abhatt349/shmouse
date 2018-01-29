@@ -35,6 +35,7 @@ int main() {
     if (FD_ISSET(listen_socket, &read_fds)) {
         client_socket = server_connect(listen_socket);
         shared_clip = shmat(clip_mem, 0, 0);
+        clients = shmat(mouse, 0, 0);
         sprintf(shared_clip, "shmeeeeeeemeeee");
         if (!fork()) {
             subserver(client_socket);
@@ -72,6 +73,7 @@ void subserver(int client_socket) {
     if (strcmp(buffer, "clip")) {
         printf("Mouse!!\n");
         mouse_process(client_socket,client_index);
+
     }
     else {
         printf("Clipboard!!\n");
@@ -98,5 +100,16 @@ void clip_process(char * s) {
 }
 
 void mouse_process(int client_socket, int client_index) {
-    //get array containg pids of clients. clients[index] returns pid of subserver that's managing
+  char *buf = (char *) calloc(BUFFER_SIZE, sizeof(char));
+  clients[client_index] = getpid();
+  char *fifo_name;
+  sprintf(fifo_name, "%dUP", getpid());
+  mkfifo(fifo_name, 0777);
+  up_fifo_fd = open(fifo_name, O_RDONLY);
+  sprintf(fifo_name, "%dDOWN", getpid());
+  mkfifo(fifo_name, 0777);
+  down_fifo_fd = open(fifo_name, O_WRONLY);
+//  while (read(up_fifo_fd, buf, BUFFER_SIZE)) {
+//  }
+    //get array containing pids of clients. clients[index] returns pid of subserver that's managing
 }
